@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Web App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+    .hidden { display: none; }
+    .highlight { border: 2px solid yellow; }
+    .accordion {
+      background-color: #333;
+      padding: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    .panel {
+      display: none;
+      padding: 10px;
+      background-color: #444;
+    }
+    .form-feedback {
+      font-size: 0.9em;
+      color: lightgreen;
+    }
+    .invalid {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Interactive Page</h1>
+  <button id="themeBtn">Toggle Theme</button>
+  <p id="secretMessage" class="hidden">You found the secret! 🎉</p>
+
+  <h2>Image Gallery</h2>
+  <img src="https://images.pexels.com/photos/31893342/pexels-photo-31893342/free-photo-of-lone-wanaka-tree-in-monochrome-lake-wanaka-nz.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Sample" id="galleryImage" style="width:150px;height:150px;" />
+
+  <h2>About Me</h2>
+  <div class="accordion">Click to expand</div>
+  <div class="panel">I am an aspiring developer learning JavaScript!</div>
+
+  <h2>Contact Form</h2>
+  <form id="contactForm">
+    <label>Name: <input type="text" id="name" required /></label><br />
+    <label>Email: <input type="email" id="email" required /></label>
+    <span id="emailFeedback" class="form-feedback"></span><br />
+    <label>Password: <input type="password" id="password" required /></label>
+    <span id="passwordFeedback" class="form-feedback"></span><br />
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const themeBtn = document.getElementById("themeBtn");
+    const secretMessage = document.getElementById("secretMessage");
+    const galleryImage = document.getElementById("galleryImage");
+    const accordions = document.querySelectorAll(".accordion");
+    const email = document.getElementById("email");
+    const emailFeedback = document.getElementById("emailFeedback");
+    const password = document.getElementById("password");
+    const passwordFeedback = document.getElementById("passwordFeedback");
+
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light-mode");
+      themeBtn.textContent = document.body.classList.contains("light-mode") ? "Dark Mode" : "Light Mode";
+    });
+
+    galleryImage.addEventListener("mouseover", () => galleryImage.classList.add("highlight"));
+    galleryImage.addEventListener("mouseout", () => galleryImage.classList.remove("highlight"));
+
+    document.addEventListener("keypress", (e) => {
+      if (e.key.toLowerCase() === 's') {
+        secretMessage.classList.remove("hidden");
+      }
+    });
+
+    galleryImage.addEventListener("dblclick", () => {
+      alert("Double-click detected! 🧙‍♂️");
+    });
+
+    accordions.forEach(acc => {
+      acc.addEventListener("click", () => {
+        const panel = acc.nextElementSibling;
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+      });
+    });
+
+    email.addEventListener("input", () => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      emailFeedback.textContent = emailRegex.test(email.value) ? "Valid email" : "Invalid email format";
+      emailFeedback.className = emailRegex.test(email.value) ? "form-feedback" : "form-feedback invalid";
+    });
+
+    password.addEventListener("input", () => {
+      const valid = password.value.length >= 8;
+      passwordFeedback.textContent = valid ? "Strong password" : "At least 8 characters";
+      passwordFeedback.className = valid ? "form-feedback" : "form-feedback invalid";
+    });
+
+    document.getElementById("contactForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Form submitted successfully ");
+    });
+  </script>
+</body>
+</html>
